@@ -6,8 +6,8 @@ const Home = () => {
       <div className="grid grid-cols-1 gap-2 pb-8">
         <div>
           <img
-            src="/video-desktop.webp"
-            alt="Imagen animada"
+            src="/video-desktop.gif"
+            alt="Animated Image"
             className="object-cover pointer-events-none select-none w-full h-full"
           />
         </div>
