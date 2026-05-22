@@ -4,15 +4,13 @@ const Home = () => {
   return (
     <Container>
       <div className="grid grid-cols-1 gap-2 pb-8">
-        <video
-          loop
-          muted
-          playsInline
-          autoPlay
-          className="object-cover pointer-events-none select-none"
-        >
-          <source src="/video-desktop.mp4" type="video/mp4" />
-        </video>
+        <div>
+          <img
+            src="/video-desktop.webp"
+            alt="Imagen animada"
+            className="object-cover pointer-events-none select-none w-full h-full"
+          />
+        </div>
 
         <div className="grid grid-cols-2 gap-2">
           <img

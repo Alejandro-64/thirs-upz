@@ -21,7 +21,7 @@ const About = () => {
             alt="Image about the team"
             width={400}
             height={400}
-            className="w-full aspect-9/16 object-cover"
+            className="w-full aspect-[9/16] object-cover"
           />
         </div>
 
