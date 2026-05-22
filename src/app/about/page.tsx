@@ -16,7 +16,7 @@ const About = () => {
 
       <Section>
         <img
-          src="https://cdn.shopify.com/s/files/1/0602/5117/7177/files/Small_Talk_Hype_Beast_Selects_096.jpg?v=1746808435"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmyF1XOBhE4MnTaVTvbfTx1p1v4if7hhqtKg&s"
           alt="Image about the team"
           width={400}
           height={400}
@@ -25,29 +25,28 @@ const About = () => {
 
         <div className="flex flex-col gap-4">
           <Paragraph>
-            Run by Nick Williams and Phil Ayers, Small Talk Studio is a seasonal
-            clothing brand initially known for their elaborate custom hand-drawn
-            garments. Based in the heart of the Garment District in New York
-            City, the studio now balances their output between made-to-order
-            custom garments, seasonal collections, and special projects.
+            Led by a team of creative designers, our firm is a seasonal clothing
+            brand initially recognized for its elaborate, custom-designed,
+            hand-drawn garments. Based in the heart of the textile industry, the
+            studio currently balances its production between bespoke haute
+            couture pieces, seasonal collections, and special design projects.
           </Paragraph>
           <Paragraph>
-            Their garments are created with a sense of elevated play and
-            artistry, but designed with everyday wear in mind. Sourcing a mix of
-            domestic and Japanese deadstock fabrics as well as creating custom
-            milled and printed fabrics and manufacturing most everything in New
-            York, everything is executed with a high degree of craftsmanship and
-            attention to detail, much like the custom garments the brand was
-            founded upon. Small Talk’s practice revolves around research and
-            experimentation, sourcing imagery and inspiration from a broad and
-            disparate range of sources and working to create new contexts for
-            their garments and the visual world behind them.
+            Our garments are created with a vision of elevated play and artistic
+            expression, but always designed with everyday wear in mind. We
+            supply a select combination of limited-edition domestic and imported
+            fabrics, in addition to developing exclusive locally manufactured
+            textiles and prints. Each piece is executed with a high level of
+            craftsmanship and attention to detail, honoring the personalized
+            dedication upon which the brand was founded. Our practice revolves
+            around constant research and experimentation, drawing inspiration
+            from a wide variety of disciplines to create new visual contexts.
           </Paragraph>
           <Paragraph>
-            Small Talk has partnered with a variety of brands on special
-            projects and collaborations including Carhartt WIP, Gitman Vintage,
-            Kartik Research, Fullcount & Co., Nike Running, Throwing Fits,
-            Perfectly Imperfect, among others.
+            Throughout our history, we have established strategic alliances with
+            a diverse range of global brands, fashion publications, and creative
+            collectives for the development of special projects and
+            limited-edition capsule collections.
           </Paragraph>
         </div>
       </Section>
