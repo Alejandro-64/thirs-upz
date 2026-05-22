@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --accent: #e1e1e1;
+  --surface: #e2dfce;
+  --surface-light: #eeece2;
+  --surface-dark: #5a5952;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-surface: var(--surface);
+  --color-surface-light: var(--surface-light);
+  --color-surface-dark: var(--surface-dark);
+
+  --font-space-grotesk:
+    var(--font-space-grotesk), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-quattrocento:
+    var(--font-quattrocento), Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-quattrocento);
+}
+
+/* indigo: {
+  100: "#e1e1e1",
+  200: "#c2c2c2",
+  300: "#a4a4a4",
+  400: "#858585",
+  500: "#676767",
+  600: "#525252",
+  700: "#3e3e3e",
+  800: "#292929",
+  900: "#151515"
+} */
+
+/* yellow: {
+  100: "#f9f9f5",
+  200: "#f3f2eb",
+  300: "#eeece2",
+  400: "#e8e5d8",
+  500: "#e2dfce",
+  600: "#b5b2a5",
+  700: "#88867c",
+  800: "#5a5952",
+  900: "#2d2d29"
+} */
