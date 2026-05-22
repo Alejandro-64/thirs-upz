@@ -15,13 +15,15 @@ const About = () => {
       </Section>
 
       <Section>
-        <img
-          src="https://pueblareal.mx/wp-content/uploads/2026/02/712187-scaled.jpeg"
-          alt="Image about the team"
-          width={400}
-          height={400}
-          className="w-full aspect-9/16 object-cover"
-        />
+        <div>
+          <img
+            src="https://pueblareal.mx/wp-content/uploads/2026/02/712187-scaled.jpeg"
+            alt="Image about the team"
+            width={400}
+            height={400}
+            className="w-full aspect-9/16 object-cover"
+          />
+        </div>
 
         <div className="flex flex-col gap-4">
           <Paragraph>
