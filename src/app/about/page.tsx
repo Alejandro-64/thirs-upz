@@ -16,7 +16,7 @@ const About = () => {
 
       <Section>
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmyF1XOBhE4MnTaVTvbfTx1p1v4if7hhqtKg&s"
+          src="https://pueblareal.mx/wp-content/uploads/2026/02/712187-scaled.jpeg"
           alt="Image about the team"
           width={400}
           height={400}
