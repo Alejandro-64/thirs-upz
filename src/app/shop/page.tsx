@@ -2,7 +2,7 @@
 
 import { Container } from "@/components";
 import { Filter, Products } from "@/features";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const Shop = () => {
   const [total, setTotal] = useState(0);
@@ -18,7 +18,15 @@ const Shop = () => {
       <Container>
         <Filter totalProducts={total} />
 
-        <Products onProductsCount={setTotal} />
+        <Suspense
+          fallback={
+            <div className="flex justify-center">
+              <p className="text-base">Loading...</p>
+            </div>
+          }
+        >
+          <Products onProductsCount={setTotal} />
+        </Suspense>
       </Container>
     </>
   );
