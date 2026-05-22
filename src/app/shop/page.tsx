@@ -16,15 +16,11 @@ const Shop = () => {
       />
 
       <Container>
-        <Filter totalProducts={total} />
+        <Suspense fallback={null}>
+          <Filter totalProducts={total} />
+        </Suspense>
 
-        <Suspense
-          fallback={
-            <div className="flex justify-center">
-              <p className="text-base">Loading...</p>
-            </div>
-          }
-        >
+        <Suspense fallback={null}>
           <Products onProductsCount={setTotal} />
         </Suspense>
       </Container>
