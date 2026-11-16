@@ -1,7 +1,7 @@
 interface ErrorProps {
   message: string;
 }
-const Error = ({ message }: ErrorProps) => {
+const ErrorMessage = ({ message }: ErrorProps) => {
   return (
     <div className="flex justify-center">
       <span className="text-base text-red-500">{message}</span>
@@ -9,4 +9,4 @@ const Error = ({ message }: ErrorProps) => {
   );
 };
 
-export default Error;
+export default ErrorMessage;

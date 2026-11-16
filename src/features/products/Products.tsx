@@ -55,10 +55,13 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
 
   const handlePageChange = useCallback(
-    (newPage: number) => {
+    (newPage: number, replace = false) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set("page", newPage.toString());
-      router.push(`${pathname}?${params.toString()}`);
+      const url = `${pathname}?${params.toString()}`;
+      // replace en correcciones automáticas: así "atrás" no vuelve a una página inválida
+      if (replace) router.replace(url);
+      else router.push(url);
     },
     [searchParams, pathname, router],
   );
@@ -69,7 +72,7 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
 
   useEffect(() => {
     if (pageParam > totalPages && totalPages > 0) {
-      handlePageChange(1);
+      handlePageChange(1, true);
     }
   }, [totalPages, pageParam, handlePageChange]);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Container } from "@/components";
-import { Error as ErrorMessage } from "@/features/products/components";
+import { ErrorMessage } from "@/features/products/components";
 
 const ProductError = () => {
   return (
