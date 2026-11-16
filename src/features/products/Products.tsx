@@ -1,6 +1,7 @@
 'use client';
 
 import { Card } from './components';
+import { getProductList } from './product-list';
 import { ProductType } from '@/types/product-type';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect } from 'react';
@@ -21,24 +22,11 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   const availabilityParam = searchParams.get('availability') || '';
   const sortParam = searchParams.get('sort') || '';
 
-  const ITEMS_PER_PAGE = 8;
-
-  const filteredProducts = products.filter((item) => {
-    if (availabilityParam === 'inStock') return item.stock > 0;
-    if (availabilityParam === 'outStock') return item.stock === 0;
-    return true;
+  const { total, totalPages, items } = getProductList(products, {
+    availability: availabilityParam,
+    sort: sortParam,
+    page: pageParam,
   });
-
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortParam === 'mayor') return a.price - b.price;
-    if (sortParam === 'minus') return b.price - a.price;
-    return 0;
-  });
-
-  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
-  const startIndex = (pageParam - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
 
   const handlePageChange = useCallback(
     (newPage: number, replace = false) => {
@@ -53,8 +41,8 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   );
 
   useEffect(() => {
-    onProductsCount(sortedProducts.length);
-  }, [sortedProducts.length, onProductsCount]);
+    onProductsCount(total);
+  }, [total, onProductsCount]);
 
   useEffect(() => {
     if (pageParam > totalPages && totalPages > 0) {
@@ -65,7 +53,7 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   return (
     <section className="py-8">
       <ul className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
-        {paginatedProducts.map((item) => (
+        {items.map((item) => (
           <li key={item.id}>
             <Card product={item} />
           </li>
