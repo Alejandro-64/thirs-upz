@@ -1,4 +1,5 @@
 import { MAX_QUANTITY, MIN_QUANTITY } from "@/constants/cart";
+import { Order } from "@/types/order-type";
 import { ProductType } from "@/types/product-type";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -8,15 +9,18 @@ const clampQuantity = (quantity: number) =>
 
 interface CartStoreProps {
   cart: ProductType[];
+  lastOrder: Order | null;
   addToCart: (product: ProductType, quantity: number) => void;
   remove: (id: number) => void;
   updateQuantity: (product: ProductType, number: number) => void;
+  completeOrder: (order: Order) => void;
 }
 
 export const useCartStore = create<CartStoreProps>()(
   persist(
     (set) => ({
       cart: [],
+      lastOrder: null,
 
       addToCart: (product, quantity) =>
         set((state) => {
@@ -50,6 +54,8 @@ export const useCartStore = create<CartStoreProps>()(
               : item,
           ),
         })),
+      // keeps the order for the confirmation page and empties the cart
+      completeOrder: (order) => set({ cart: [], lastOrder: order }),
     }),
 
     {
