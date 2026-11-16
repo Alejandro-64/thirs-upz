@@ -1,11 +1,11 @@
 import { Button } from "@/components";
 import { MAX_QUANTITY, MIN_QUANTITY } from "@/constants/cart";
 import { useCartStore } from "@/store/cart-store";
-import { ProductType } from "@/types/product-type";
+import { CartItem } from "@/types/cart-item-type";
 import Image from "next/image";
 import { MdAdd, MdOutlineDelete, MdRemove } from "react-icons/md";
 
-const Card = ({ product }: { product: ProductType }) => {
+const Card = ({ product }: { product: CartItem }) => {
   const remove = useCartStore((state) => state.remove);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
 
@@ -32,7 +32,7 @@ const Card = ({ product }: { product: ProductType }) => {
           <Button
             aria-label="Decrement Quantity"
             disabled={product.quantity <= MIN_QUANTITY}
-            onClick={() => updateQuantity(product, -1)}
+            onClick={() => updateQuantity(product.id, -1)}
           >
             <MdRemove />
           </Button>
@@ -40,7 +40,7 @@ const Card = ({ product }: { product: ProductType }) => {
           <Button
             aria-label="Increment Quantity"
             disabled={product.quantity >= MAX_QUANTITY}
-            onClick={() => updateQuantity(product, 1)}
+            onClick={() => updateQuantity(product.id, 1)}
           >
             <MdAdd />
           </Button>

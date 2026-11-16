@@ -24,7 +24,6 @@ const createProduct = (id: number, price = 10): ProductType => ({
   availability: "In Stock",
   images: [],
   thumbnail: "",
-  quantity: 1,
 });
 
 const quantityOf = (id: number) =>
@@ -69,12 +68,20 @@ describe("cart store", () => {
     const { addToCart, updateQuantity } = useCartStore.getState();
 
     addToCart(product, 1);
-    updateQuantity(product, -1);
+    updateQuantity(1, -1);
     expect(quantityOf(1)).toBe(1);
 
     addToCart(product, 9);
-    updateQuantity(product, 1);
+    updateQuantity(1, 1);
     expect(quantityOf(1)).toBe(10);
+  });
+
+  it("stores only the fields the cart needs", () => {
+    useCartStore.getState().addToCart(createProduct(1), 2);
+
+    expect(Object.keys(useCartStore.getState().cart[0]).sort()).toEqual(
+      ["id", "price", "quantity", "stock", "thumbnail", "title"],
+    );
   });
 
   it("remove deletes only the given product", () => {

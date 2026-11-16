@@ -9,7 +9,6 @@ export type ProductType = {
   availability: string;
   images: string[];
   thumbnail: string;
-  quantity: number;
 };
 
 export type ApiResponse = {

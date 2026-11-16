@@ -1,4 +1,5 @@
 import { MAX_QUANTITY, MIN_QUANTITY } from "@/constants/cart";
+import { CartItem } from "@/types/cart-item-type";
 import { Order } from "@/types/order-type";
 import { ProductType } from "@/types/product-type";
 import { create } from "zustand";
@@ -8,11 +9,11 @@ const clampQuantity = (quantity: number) =>
   Math.min(MAX_QUANTITY, Math.max(MIN_QUANTITY, quantity));
 
 interface CartStoreProps {
-  cart: ProductType[];
+  cart: CartItem[];
   lastOrder: Order | null;
   addToCart: (product: ProductType, quantity: number) => void;
   remove: (id: number) => void;
-  updateQuantity: (product: ProductType, number: number) => void;
+  updateQuantity: (id: number, delta: number) => void;
   completeOrder: (order: Order) => void;
 }
 
@@ -38,7 +39,14 @@ export const useCartStore = create<CartStoreProps>()(
                 )
               : [
                   ...state.cart,
-                  { ...product, quantity: clampQuantity(quantity) },
+                  {
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    thumbnail: product.thumbnail,
+                    stock: product.stock,
+                    quantity: clampQuantity(quantity),
+                  },
                 ],
           };
         }),
@@ -46,11 +54,11 @@ export const useCartStore = create<CartStoreProps>()(
         set((state) => ({
           cart: state.cart.filter((item) => item.id !== id),
         })),
-      updateQuantity: (product, number) =>
+      updateQuantity: (id, delta) =>
         set((state) => ({
           cart: state.cart.map((item) =>
-            item.id === product.id
-              ? { ...item, quantity: clampQuantity(item.quantity + number) }
+            item.id === id
+              ? { ...item, quantity: clampQuantity(item.quantity + delta) }
               : item,
           ),
         })),

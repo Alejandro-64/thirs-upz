@@ -13,7 +13,6 @@ const createProduct = (id: number, price = 10, stock = 5): ProductType => ({
   availability: "In Stock",
   images: [],
   thumbnail: "",
-  quantity: 1,
 });
 
 const createProducts = (count: number) =>
