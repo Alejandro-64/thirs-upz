@@ -30,7 +30,7 @@ const Select = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         className={twMerge(
-          "appearance-none outline-none w-28 px-2 text-xs",
+          "appearance-none w-28 px-2 text-xs",
           className,
         )}
       >

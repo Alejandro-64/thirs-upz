@@ -67,7 +67,7 @@ const CheckoutForm = () => {
             autoComplete={autoComplete}
             aria-invalid={errors[name] ? true : undefined}
             aria-describedby={errors[name] ? `${name}-error` : undefined}
-            className="appearance-none outline-none w-full pb-1 border-b border-accent text-sm aria-invalid:border-red-500"
+            className="appearance-none w-full pb-1 border-b border-accent text-sm aria-invalid:border-red-500"
             {...register(name)}
           />
           {errors[name] && (
