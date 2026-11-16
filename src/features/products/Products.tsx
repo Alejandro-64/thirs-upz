@@ -1,23 +1,21 @@
 "use client";
 
-import { useFetch } from "@/hooks";
-import { Card, Error, Loading } from "./components";
+import { Card } from "./components";
 import { ApiResponse } from "@/types/product-type";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 
 interface ProductsProps {
+  productsPromise: Promise<ApiResponse>;
   onProductsCount: (count: number) => void;
 }
 
-const Products = ({ onProductsCount }: ProductsProps) => {
+const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const { data, error, loading } = useFetch<ApiResponse>(
-    "https://dummyjson.com/products?limit=0",
-  );
+  const data = use(productsPromise);
 
   const pageParam = Number(searchParams.get("page")) || 1;
   const availabilityParam = searchParams.get("availability") || "";
@@ -35,10 +33,9 @@ const Products = ({ onProductsCount }: ProductsProps) => {
     "womens-shoes",
   ];
 
-  const baseClothing =
-    data?.products.filter((item) =>
-      clothingCategories.includes(item.category),
-    ) || [];
+  const baseClothing = data.products.filter((item) =>
+    clothingCategories.includes(item.category),
+  );
 
   const filteredProducts = baseClothing.filter((item) => {
     if (availabilityParam === "inStock") return item.stock > 0;
@@ -64,10 +61,8 @@ const Products = ({ onProductsCount }: ProductsProps) => {
   };
 
   useEffect(() => {
-    if (!loading && sortedProducts) {
-      onProductsCount(sortedProducts.length);
-    }
-  }, [sortedProducts.length, loading]);
+    onProductsCount(sortedProducts.length);
+  }, [sortedProducts.length]);
 
   useEffect(() => {
     if (pageParam > totalPages && totalPages > 0) {
@@ -77,44 +72,37 @@ const Products = ({ onProductsCount }: ProductsProps) => {
 
   return (
     <section className="py-8">
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <ul className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
-            {paginatedProducts?.map((item) => (
-              <li key={item.id}>
-                <Card product={item} />
-              </li>
-            ))}
-          </ul>
+      <ul className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
+        {paginatedProducts.map((item) => (
+          <li key={item.id}>
+            <Card product={item} />
+          </li>
+        ))}
+      </ul>
 
-          {totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-4">
-              <button
-                onClick={() => handlePageChange(pageParam - 1)}
-                disabled={pageParam === 1}
-                className="rounded bg-gray-200 px-4 py-2 text-sm font-medium disabled:opacity-50"
-              >
-                Anterior
-              </button>
+      {totalPages > 1 && (
+        <div className="mt-8 flex items-center justify-center gap-4">
+          <button
+            onClick={() => handlePageChange(pageParam - 1)}
+            disabled={pageParam === 1}
+            className="rounded bg-gray-200 px-4 py-2 text-sm font-medium disabled:opacity-50"
+          >
+            Anterior
+          </button>
 
-              <span className="text-sm font-medium">
-                Página {pageParam} de {totalPages}
-              </span>
+          <span className="text-sm font-medium">
+            Página {pageParam} de {totalPages}
+          </span>
 
-              <button
-                onClick={() => handlePageChange(pageParam + 1)}
-                disabled={pageParam === totalPages}
-                className="rounded bg-gray-200 px-4 py-2 text-sm font-medium disabled:opacity-50"
-              >
-                Siguiente
-              </button>
-            </div>
-          )}
-        </>
+          <button
+            onClick={() => handlePageChange(pageParam + 1)}
+            disabled={pageParam === totalPages}
+            className="rounded bg-gray-200 px-4 py-2 text-sm font-medium disabled:opacity-50"
+          >
+            Siguiente
+          </button>
+        </div>
       )}
-      {!loading && error && <Error message={error} />}
     </section>
   );
 };
