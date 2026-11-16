@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Paragraph } from "@/components";
-import { QUANTITY_OPTIONS } from "@/constants/cart";
+import { MIN_QUANTITY, maxQuantityFor } from "@/constants/cart";
 import { useCartStore } from "@/store/cart-store";
 import { ProductType } from "@/types/product-type";
 import Image from "next/image";
@@ -13,9 +13,16 @@ interface ProductDetailProps {
 }
 
 const ProductDetail = ({ product }: ProductDetailProps) => {
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState<number>(MIN_QUANTITY);
 
   const addToCart = useCartStore((state) => state.addToCart);
+
+  const maxQuantity = maxQuantityFor(product.stock);
+  const isOutOfStock = maxQuantity < MIN_QUANTITY;
+  const quantityOptions = Array.from(
+    { length: maxQuantity },
+    (_, index) => MIN_QUANTITY + index,
+  );
 
   return (
     <section className="py-8 grid grid-cols-1 gap-4 items-start lg:grid-cols-2 lg:gap-0">
@@ -27,7 +34,11 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
           <Image
             key={index}
             src={img}
-            alt={product.title}
+            alt={
+              product.images.length > 1
+                ? `${product.title}, image ${index + 1} of ${product.images.length}`
+                : product.title
+            }
             width={800}
             height={800}
             priority={index === 0}
@@ -47,26 +58,29 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
         </div>
 
         <div className="pt-4 pb-16 border-t border-accent grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <div className="flex items-center gap-4 text-xs">
-            <label htmlFor="quantity">Quantity</label>
-            <select
-              id="quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-            >
-              {QUANTITY_OPTIONS.map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-          </div>
+          {!isOutOfStock && (
+            <div className="flex items-center gap-4 text-xs">
+              <label htmlFor="quantity">Quantity</label>
+              <select
+                id="quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+              >
+                {quantityOptions.map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <Button
-            className="bg-accent w-full h-8"
+            className="bg-accent w-full h-8 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isOutOfStock}
             onClick={() => addToCart(product, quantity)}
           >
-            Add to cart
+            {isOutOfStock ? "Out of stock" : "Add to cart"}
           </Button>
         </div>
 

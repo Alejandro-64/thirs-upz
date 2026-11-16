@@ -1,12 +1,12 @@
-import { MAX_QUANTITY, MIN_QUANTITY } from "@/constants/cart";
+import { MIN_QUANTITY, maxQuantityFor } from "@/constants/cart";
 import { CartItem } from "@/types/cart-item-type";
 import { Order } from "@/types/order-type";
 import { ProductType } from "@/types/product-type";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const clampQuantity = (quantity: number) =>
-  Math.min(MAX_QUANTITY, Math.max(MIN_QUANTITY, quantity));
+const clampQuantity = (quantity: number, stock: number) =>
+  Math.min(maxQuantityFor(stock), Math.max(MIN_QUANTITY, quantity));
 
 interface CartStoreProps {
   cart: CartItem[];
@@ -25,6 +25,9 @@ export const useCartStore = create<CartStoreProps>()(
 
       addToCart: (product, quantity) =>
         set((state) => {
+          // nothing can be added when there is no stock
+          if (product.stock < MIN_QUANTITY) return state;
+
           const isFoundId = state.cart.find((item) => item.id === product.id);
 
           return {
@@ -33,7 +36,11 @@ export const useCartStore = create<CartStoreProps>()(
                   item.id === product.id
                     ? {
                         ...item,
-                        quantity: clampQuantity(item.quantity + quantity),
+                        stock: product.stock,
+                        quantity: clampQuantity(
+                          item.quantity + quantity,
+                          product.stock,
+                        ),
                       }
                     : item,
                 )
@@ -45,7 +52,7 @@ export const useCartStore = create<CartStoreProps>()(
                     price: product.price,
                     thumbnail: product.thumbnail,
                     stock: product.stock,
-                    quantity: clampQuantity(quantity),
+                    quantity: clampQuantity(quantity, product.stock),
                   },
                 ],
           };
@@ -58,7 +65,10 @@ export const useCartStore = create<CartStoreProps>()(
         set((state) => ({
           cart: state.cart.map((item) =>
             item.id === id
-              ? { ...item, quantity: clampQuantity(item.quantity + delta) }
+              ? {
+                  ...item,
+                  quantity: clampQuantity(item.quantity + delta, item.stock),
+                }
               : item,
           ),
         })),

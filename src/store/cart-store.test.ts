@@ -13,13 +13,13 @@ const { useCartStore, TOTAL_PRICE, TOTAL_QUANTITY } = await import(
   "./cart-store"
 );
 
-const createProduct = (id: number, price = 10): ProductType => ({
+const createProduct = (id: number, price = 10, stock = 50): ProductType => ({
   id,
   title: `Product ${id}`,
   description: "",
   category: "tops",
   price,
-  stock: 5,
+  stock,
   tags: [],
   availability: "In Stock",
   images: [],
@@ -74,6 +74,24 @@ describe("cart store", () => {
     addToCart(product, 9);
     updateQuantity(1, 1);
     expect(quantityOf(1)).toBe(10);
+  });
+
+  it("never goes over the stock of the product", () => {
+    const { addToCart, updateQuantity } = useCartStore.getState();
+    addToCart(createProduct(1, 10, 3), 5);
+    expect(quantityOf(1)).toBe(3);
+
+    updateQuantity(1, 1);
+    expect(quantityOf(1)).toBe(3);
+
+    addToCart(createProduct(1, 10, 3), 2);
+    expect(quantityOf(1)).toBe(3);
+  });
+
+  it("does not add a product without stock", () => {
+    useCartStore.getState().addToCart(createProduct(1, 10, 0), 1);
+
+    expect(useCartStore.getState().cart).toHaveLength(0);
   });
 
   it("stores only the fields the cart needs", () => {

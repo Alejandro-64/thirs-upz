@@ -1,5 +1,5 @@
 import { Button } from "@/components";
-import { MAX_QUANTITY, MIN_QUANTITY } from "@/constants/cart";
+import { MIN_QUANTITY, maxQuantityFor } from "@/constants/cart";
 import { useCartStore } from "@/store/cart-store";
 import { CartItem } from "@/types/cart-item-type";
 import Image from "next/image";
@@ -39,7 +39,7 @@ const Card = ({ product }: { product: CartItem }) => {
           <span className="text-xs">{product.quantity}</span>
           <Button
             aria-label="Increment Quantity"
-            disabled={product.quantity >= MAX_QUANTITY}
+            disabled={product.quantity >= maxQuantityFor(product.stock)}
             onClick={() => updateQuantity(product.id, 1)}
           >
             <MdAdd />
