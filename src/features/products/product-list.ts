@@ -1,12 +1,24 @@
+import { AVAILABILITY, Availability, SORT, Sort } from "@/constants/products";
 import { ProductType } from "@/types/product-type";
 
 export const ITEMS_PER_PAGE = 8;
 
 interface ProductListOptions {
-  availability: string;
-  sort: string;
+  availability?: Availability;
+  sort?: Sort;
   page: number;
 }
+
+// reads the list options from the URL; unknown values are ignored
+export const parseListOptions = (params: {
+  get: (name: string) => string | null;
+}): ProductListOptions => ({
+  availability: Object.values(AVAILABILITY).find(
+    (value) => value === params.get("availability"),
+  ),
+  sort: Object.values(SORT).find((value) => value === params.get("sort")),
+  page: Number(params.get("page")) || 1,
+});
 
 export const getProductList = (
   products: ProductType[],
@@ -14,13 +26,13 @@ export const getProductList = (
 ) => {
   const sorted = products
     .filter((item) => {
-      if (availability === "inStock") return item.stock > 0;
-      if (availability === "outStock") return item.stock === 0;
+      if (availability === AVAILABILITY.IN_STOCK) return item.stock > 0;
+      if (availability === AVAILABILITY.OUT_OF_STOCK) return item.stock === 0;
       return true;
     })
     .sort((a, b) => {
-      if (sort === "mayor") return a.price - b.price;
-      if (sort === "minus") return b.price - a.price;
+      if (sort === SORT.PRICE_ASC) return a.price - b.price;
+      if (sort === SORT.PRICE_DESC) return b.price - a.price;
       return 0;
     });
 

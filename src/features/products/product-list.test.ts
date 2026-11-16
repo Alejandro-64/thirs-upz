@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ProductType } from "@/types/product-type";
-import { getProductList } from "./product-list";
+import { getProductList, parseListOptions } from "./product-list";
 
 const createProduct = (id: number, price = 10, stock = 5): ProductType => ({
   id,
@@ -20,7 +20,7 @@ const createProducts = (count: number) =>
 
 const ids = (items: ProductType[]) => items.map((item) => item.id);
 
-const defaults = { availability: "", sort: "", page: 1 };
+const defaults = { page: 1 };
 
 describe("getProductList", () => {
   describe("availability", () => {
@@ -62,14 +62,20 @@ describe("getProductList", () => {
       createProduct(3, 20),
     ];
 
-    it("mayor sorts by price ascending", () => {
-      const { items } = getProductList(products, { ...defaults, sort: "mayor" });
+    it("price-asc sorts by price ascending", () => {
+      const { items } = getProductList(products, {
+        ...defaults,
+        sort: "price-asc",
+      });
 
       expect(ids(items)).toEqual([2, 3, 1]);
     });
 
-    it("minus sorts by price descending", () => {
-      const { items } = getProductList(products, { ...defaults, sort: "minus" });
+    it("price-desc sorts by price descending", () => {
+      const { items } = getProductList(products, {
+        ...defaults,
+        sort: "price-desc",
+      });
 
       expect(ids(items)).toEqual([1, 3, 2]);
     });
@@ -81,7 +87,7 @@ describe("getProductList", () => {
     });
 
     it("does not modify the original array", () => {
-      getProductList(products, { ...defaults, sort: "mayor" });
+      getProductList(products, { ...defaults, sort: "price-asc" });
 
       expect(ids(products)).toEqual([1, 2, 3]);
     });
@@ -126,5 +132,29 @@ describe("getProductList", () => {
 
       expect(ids(items)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
     });
+  });
+});
+
+describe("parseListOptions", () => {
+  const fromQuery = (query: string) => parseListOptions(new URLSearchParams(query));
+
+  it("reads the availability, sort and page from the URL", () => {
+    expect(fromQuery("availability=inStock&sort=price-desc&page=3")).toEqual({
+      availability: "inStock",
+      sort: "price-desc",
+      page: 3,
+    });
+  });
+
+  it("ignores values it does not know", () => {
+    const options = fromQuery("availability=other&sort=mayor");
+
+    expect(options.availability).toBeUndefined();
+    expect(options.sort).toBeUndefined();
+  });
+
+  it("defaults to the first page when the page is missing or not a number", () => {
+    expect(fromQuery("").page).toBe(1);
+    expect(fromQuery("page=abc").page).toBe(1);
   });
 });

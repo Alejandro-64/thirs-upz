@@ -1,7 +1,5 @@
-"use client";
-
 import { Container } from "@/components";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import Filter from "../filter/Filter";
 import Products from "../products/Products";
 import { Loading } from "../products/components";
@@ -12,19 +10,14 @@ interface ShopContentProps {
 }
 
 const ShopContent = ({ productsPromise }: ShopContentProps) => {
-  const [total, setTotal] = useState(0);
-
   return (
     <Container>
       <Suspense fallback={null}>
-        <Filter totalProducts={total} />
+        <Filter productsPromise={productsPromise} />
       </Suspense>
 
       <Suspense fallback={<Loading />}>
-        <Products
-          productsPromise={productsPromise}
-          onProductsCount={setTotal}
-        />
+        <Products productsPromise={productsPromise} />
       </Suspense>
     </Container>
   );

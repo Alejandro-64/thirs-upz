@@ -1,20 +1,25 @@
 "use client";
 
 import { Heading } from "@/components";
+import { AVAILABILITY, SORT } from "@/constants/products";
+import { getProductList, parseListOptions } from "../products/product-list";
+import { ProductType } from "@/types/product-type";
 import { Box, Label, Select } from "./components";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { use } from "react";
 
 interface FilterProps {
-  totalProducts?: number;
+  productsPromise: Promise<ProductType[]>;
 }
 
-const Filter = ({ totalProducts = 0 }: FilterProps) => {
+const Filter = ({ productsPromise }: FilterProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const currentAvailability = searchParams.get("availability") || "";
-  const currentSort = searchParams.get("sort") || "";
+  const products = use(productsPromise);
+  const options = parseListOptions(searchParams);
+  const { total } = getProductList(products, options);
 
   const handleSelectChange = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -24,6 +29,9 @@ const Filter = ({ totalProducts = 0 }: FilterProps) => {
     } else {
       params.delete(key);
     }
+
+    // a new filter can leave the current page empty, so it starts again from page 1
+    params.delete("page");
 
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
@@ -39,12 +47,12 @@ const Filter = ({ totalProducts = 0 }: FilterProps) => {
           <Label htmlFor="filter">Filter</Label>
           <Select
             id="filter"
-            value={currentAvailability}
+            value={options.availability ?? ""}
             onChange={(e) => handleSelectChange("availability", e.target.value)}
           >
             <option value="">Availability</option>
-            <option value="inStock">In Stock</option>
-            <option value="outStock">Out of Stock</option>
+            <option value={AVAILABILITY.IN_STOCK}>In Stock</option>
+            <option value={AVAILABILITY.OUT_OF_STOCK}>Out of Stock</option>
           </Select>
         </Box>
 
@@ -52,18 +60,18 @@ const Filter = ({ totalProducts = 0 }: FilterProps) => {
           <Label htmlFor="sort">Sort</Label>
           <Select
             id="sort"
-            value={currentSort}
+            value={options.sort ?? ""}
             onChange={(e) => handleSelectChange("sort", e.target.value)}
           >
             <option value="">Featured</option>
-            <option value="mayor">Price ↑</option>
-            <option value="minus">Price ↓</option>
+            <option value={SORT.PRICE_ASC}>Price ↑</option>
+            <option value={SORT.PRICE_DESC}>Price ↓</option>
           </Select>
         </Box>
       </div>
 
       <div className="col-start-3 col-end-5 flex justify-end lg:col-start-4">
-        <span className="text-xs">{totalProducts} Products</span>
+        <span className="text-xs">{total} Products</span>
       </div>
     </section>
   );

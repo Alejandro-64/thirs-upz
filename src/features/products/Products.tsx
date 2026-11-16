@@ -1,32 +1,27 @@
 'use client';
 
+import { Link } from '@/components';
 import { Card } from './components';
-import { getProductList } from './product-list';
+import { getProductList, parseListOptions } from './product-list';
 import { ProductType } from '@/types/product-type';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect } from 'react';
 
 interface ProductsProps {
   productsPromise: Promise<ProductType[]>;
-  onProductsCount: (count: number) => void;
 }
 
-const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
+const Products = ({ productsPromise }: ProductsProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const products = use(productsPromise);
 
-  const pageParam = Number(searchParams.get('page')) || 1;
-  const availabilityParam = searchParams.get('availability') || '';
-  const sortParam = searchParams.get('sort') || '';
+  const options = parseListOptions(searchParams);
+  const pageParam = options.page;
 
-  const { total, totalPages, items } = getProductList(products, {
-    availability: availabilityParam,
-    sort: sortParam,
-    page: pageParam,
-  });
+  const { total, totalPages, items } = getProductList(products, options);
 
   const handlePageChange = useCallback(
     (newPage: number, replace = false) => {
@@ -41,14 +36,22 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   );
 
   useEffect(() => {
-    onProductsCount(total);
-  }, [total, onProductsCount]);
-
-  useEffect(() => {
     if (pageParam > totalPages && totalPages > 0) {
       handlePageChange(1, true);
     }
   }, [totalPages, pageParam, handlePageChange]);
+
+  if (total === 0) {
+    return (
+      <section
+        role="status"
+        className="py-16 flex flex-col items-center gap-4"
+      >
+        <p className="text-sm">No products match your filters.</p>
+        <Link href={pathname}>Clear filters</Link>
+      </section>
+    );
+  }
 
   return (
     <section className="py-8">
@@ -61,7 +64,10 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
       </ul>
 
       {totalPages > 1 && (
-        <div className="mt-8 flex items-center justify-center gap-4">
+        <nav
+          aria-label="Pagination"
+          className="mt-8 flex items-center justify-center gap-4"
+        >
           <button
             onClick={() => handlePageChange(pageParam - 1)}
             disabled={pageParam === 1}
@@ -81,7 +87,7 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
           >
             Next
           </button>
-        </div>
+        </nav>
       )}
     </section>
   );
