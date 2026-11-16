@@ -94,6 +94,9 @@ cd thirs-upz
 # Instalar dependencias
 npm install
 
+# Crear el archivo de variables de entorno
+cp .env.example .env
+
 # Ejecutar en desarrollo
 npm run dev
 ```
