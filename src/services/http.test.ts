@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getClothingProducts, getProductById } from "./http";
+import { getClothingProducts, getProductById, HttpError } from "./http";
 
 const mockFetch = (response: { ok: boolean; status?: number; body?: unknown }) => {
   const fetchMock = vi.fn().mockResolvedValue({
@@ -38,6 +38,16 @@ describe("http service", () => {
     mockFetch({ ok: false, status: 404 });
 
     await expect(getProductById("999")).rejects.toThrow("Error: 404");
+  });
+
+  it("the error carries the HTTP status", async () => {
+    mockFetch({ ok: false, status: 404 });
+
+    await expect(getProductById("999")).rejects.toMatchObject({
+      name: "Error",
+      status: 404,
+    });
+    await expect(getProductById("999")).rejects.toBeInstanceOf(HttpError);
   });
 
   it("getProductById requests the product by id", async () => {

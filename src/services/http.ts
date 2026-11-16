@@ -4,9 +4,18 @@ import { ApiResponse, ProductType } from '@/types/product-type';
 const BASE_URL = process.env.NEXT_PUBLIC_URL_API;
 if (!BASE_URL) throw new Error('Falta la variable NEXT_PUBLIC_URL_API');
 
+export class HttpError extends Error {
+  status: number;
+
+  constructor(status: number) {
+    super(`Error: ${status}`);
+    this.status = status;
+  }
+}
+
 async function http<T>(url: string): Promise<T> {
   const response = await fetch(url, { next: { revalidate: 3600 } });
-  if (!response.ok) throw new Error(`Error: ${response.status}`);
+  if (!response.ok) throw new HttpError(response.status);
   return response.json();
 }
 
