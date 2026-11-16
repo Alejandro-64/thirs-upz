@@ -67,11 +67,11 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
             disabled={pageParam === 1}
             className="rounded bg-gray-200 px-4 py-2 text-sm font-medium disabled:opacity-50"
           >
-            Anterior
+            Previous
           </button>
 
           <span className="text-sm font-medium">
-            Página {pageParam} de {totalPages}
+            Page {pageParam} of {totalPages}
           </span>
 
           <button
@@ -79,7 +79,7 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
             disabled={pageParam === totalPages}
             className="rounded bg-gray-200 px-4 py-2 text-sm font-medium disabled:opacity-50"
           >
-            Siguiente
+            Next
           </button>
         </div>
       )}

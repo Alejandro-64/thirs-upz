@@ -7,7 +7,7 @@ import { ErrorMessage } from "@/features/products/components";
 const ShopError = () => {
   return (
     <Container>
-      <ErrorMessage message="No pudimos cargar los productos. Intenta de nuevo más tarde." />
+      <ErrorMessage message="We couldn't load the products. Please try again later." />
     </Container>
   );
 };
