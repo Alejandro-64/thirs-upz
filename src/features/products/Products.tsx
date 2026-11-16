@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Card } from "./components";
-import { ApiResponse } from "@/types/product-type";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { use, useCallback, useEffect } from "react";
+import { Card } from './components';
+import { ProductType } from '@/types/product-type';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { use, useCallback, useEffect } from 'react';
 
 interface ProductsProps {
-  productsPromise: Promise<ApiResponse>;
+  productsPromise: Promise<ProductType[]>;
   onProductsCount: (count: number) => void;
 }
 
@@ -15,37 +15,23 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const data = use(productsPromise);
+  const products = use(productsPromise);
 
-  const pageParam = Number(searchParams.get("page")) || 1;
-  const availabilityParam = searchParams.get("availability") || "";
-  const sortParam = searchParams.get("sort") || "";
+  const pageParam = Number(searchParams.get('page')) || 1;
+  const availabilityParam = searchParams.get('availability') || '';
+  const sortParam = searchParams.get('sort') || '';
 
   const ITEMS_PER_PAGE = 8;
 
-  const clothingCategories = [
-    "mens-shirts",
-    "mens-shoes",
-    "tops",
-    "sunglasses",
-    "womens-bags",
-    "womens-dresses",
-    "womens-shoes",
-  ];
-
-  const baseClothing = data.products.filter((item) =>
-    clothingCategories.includes(item.category),
-  );
-
-  const filteredProducts = baseClothing.filter((item) => {
-    if (availabilityParam === "inStock") return item.stock > 0;
-    if (availabilityParam === "outStock") return item.stock === 0;
+  const filteredProducts = products.filter((item) => {
+    if (availabilityParam === 'inStock') return item.stock > 0;
+    if (availabilityParam === 'outStock') return item.stock === 0;
     return true;
   });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortParam === "mayor") return a.price - b.price;
-    if (sortParam === "minus") return b.price - a.price;
+    if (sortParam === 'mayor') return a.price - b.price;
+    if (sortParam === 'minus') return b.price - a.price;
     return 0;
   });
 
@@ -57,9 +43,9 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   const handlePageChange = useCallback(
     (newPage: number, replace = false) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set("page", newPage.toString());
+      params.set('page', newPage.toString());
       const url = `${pathname}?${params.toString()}`;
-      // replace en correcciones automáticas: así "atrás" no vuelve a una página inválida
+
       if (replace) router.replace(url);
       else router.push(url);
     },

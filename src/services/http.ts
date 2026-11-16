@@ -1,3 +1,4 @@
+import { CLOTHING_CATEGORIES } from '@/constants/products';
 import { ApiResponse, ProductType } from '@/types/product-type';
 
 const BASE_URL = process.env.NEXT_PUBLIC_URL_API;
@@ -9,8 +10,11 @@ async function http<T>(url: string): Promise<T> {
   return response.json();
 }
 
-export const getProducts = () => {
-  return http<ApiResponse>(`${BASE_URL}?limit=0`);
+export const getClothingProducts = async () => {
+  const { products } = await http<ApiResponse>(`${BASE_URL}?limit=0`);
+  return products.filter((product) =>
+    CLOTHING_CATEGORIES.includes(product.category),
+  );
 };
 
 export const getProductById = (id: string) => {

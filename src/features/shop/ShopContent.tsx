@@ -5,10 +5,10 @@ import { Suspense, useState } from "react";
 import Filter from "../filter/Filter";
 import Products from "../products/Products";
 import { Loading } from "../products/components";
-import { ApiResponse } from "@/types/product-type";
+import { ProductType } from "@/types/product-type";
 
 interface ShopContentProps {
-  productsPromise: Promise<ApiResponse>;
+  productsPromise: Promise<ProductType[]>;
 }
 
 const ShopContent = ({ productsPromise }: ShopContentProps) => {

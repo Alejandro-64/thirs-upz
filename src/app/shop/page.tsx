@@ -1,8 +1,8 @@
 import ShopContent from '@/features/shop/ShopContent';
-import { getProducts } from '@/services/http';
+import { getClothingProducts } from '@/services/http';
 
 const Shop = () => {
-  const productsPromise = getProducts();
+  const productsPromise = getClothingProducts();
 
   return (
     <>
