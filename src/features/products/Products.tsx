@@ -3,7 +3,7 @@
 import { Card } from "./components";
 import { ApiResponse } from "@/types/product-type";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { use, useEffect } from "react";
+import { use, useCallback, useEffect } from "react";
 
 interface ProductsProps {
   productsPromise: Promise<ApiResponse>;
@@ -54,21 +54,24 @@ const Products = ({ productsPromise, onProductsCount }: ProductsProps) => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
 
-  const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", newPage.toString());
-    router.push(`${pathname}?${params.toString()}`);
-  };
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", newPage.toString());
+      router.push(`${pathname}?${params.toString()}`);
+    },
+    [searchParams, pathname, router],
+  );
 
   useEffect(() => {
     onProductsCount(sortedProducts.length);
-  }, [sortedProducts.length]);
+  }, [sortedProducts.length, onProductsCount]);
 
   useEffect(() => {
     if (pageParam > totalPages && totalPages > 0) {
       handlePageChange(1);
     }
-  }, [totalPages]);
+  }, [totalPages, pageParam, handlePageChange]);
 
   return (
     <section className="py-8">
