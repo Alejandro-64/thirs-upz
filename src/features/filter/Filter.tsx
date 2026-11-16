@@ -52,7 +52,6 @@ const Filter = ({ totalProducts = 0 }: FilterProps) => {
           <Label htmlFor="sort">Sort</Label>
           <Select
             id="sort"
-            className="appearance-none"
             value={currentSort}
             onChange={(e) => handleSelectChange("sort", e.target.value)}
           >
