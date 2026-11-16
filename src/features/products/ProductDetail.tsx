@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Paragraph } from "@/components";
+import { QUANTITY_OPTIONS } from "@/constants/cart";
 import { useCartStore } from "@/store/cart-store";
 import { ProductType } from "@/types/product-type";
 import Image from "next/image";
@@ -53,16 +54,11 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
+              {QUANTITY_OPTIONS.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
             </select>
           </div>
 

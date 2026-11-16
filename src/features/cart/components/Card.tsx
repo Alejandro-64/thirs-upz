@@ -1,4 +1,5 @@
 import { Button } from "@/components";
+import { MAX_QUANTITY, MIN_QUANTITY } from "@/constants/cart";
 import { useCartStore } from "@/store/cart-store";
 import { ProductType } from "@/types/product-type";
 import { MdAdd, MdOutlineDelete, MdRemove } from "react-icons/md";
@@ -29,7 +30,7 @@ const Card = ({ product }: { product: ProductType }) => {
         <div className="w-20 p-2 border border-accent flex items-center justify-between gap-2">
           <Button
             aria-label="Decrement Quantity"
-            disabled={product.quantity === 1}
+            disabled={product.quantity <= MIN_QUANTITY}
             onClick={() => updateQuantity(product, -1)}
           >
             <MdRemove />
@@ -37,7 +38,7 @@ const Card = ({ product }: { product: ProductType }) => {
           <span className="text-xs">{product.quantity}</span>
           <Button
             aria-label="Increment Quantity"
-            disabled={product.quantity === 10}
+            disabled={product.quantity >= MAX_QUANTITY}
             onClick={() => updateQuantity(product, 1)}
           >
             <MdAdd />
