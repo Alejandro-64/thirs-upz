@@ -3,6 +3,7 @@
 import { Button, Paragraph } from "@/components";
 import { useCartStore } from "@/store/cart-store";
 import { ProductType } from "@/types/product-type";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -22,13 +23,13 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
         style={{ scrollbarWidth: "none" }}
       >
         {product.images.map((img, index) => (
-          <img
+          <Image
             key={index}
             src={img}
             alt={product.title}
             width={800}
             height={800}
-            loading="lazy"
+            priority={index === 0}
             className="w-full h-full mb-4"
           />
         ))}
