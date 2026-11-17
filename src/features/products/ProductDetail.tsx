@@ -49,7 +49,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 
       <div className="flex flex-col gap-4 px-4 lg:sticky lg:top-8">
         <Link href="/shop" className="text-xs">
-          ← Return to the shop
+          ← Return to Shop
         </Link>
 
         <div className="pt-4 pb-16 border-t border-accent flex flex-col gap-4">
