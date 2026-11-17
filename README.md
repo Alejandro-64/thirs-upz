@@ -8,9 +8,7 @@
 ![Zustand](https://img.shields.io/badge/Zustand-5-orange?style=flat-square)
 ![Vitest](https://img.shields.io/badge/Vitest-4-6e9f18?logo=vitest&logoColor=white&style=flat-square)
 
-<!-- Activar cuando exista la demo desplegada:
-**Demo:** https://enlace-de-la-demo
--->
+**Demo:** [thirs-upz.vercel.app](https://thirs-upz.vercel.app/)
 
 ---
 
@@ -20,12 +18,17 @@ Thirs Upz es una tienda de ropa online construida con Next.js. Permite a los usu
 
 Los productos se consumen desde la API pública [DummyJSON](https://dummyjson.com/), filtrando las categorías de ropa y calzado disponibles. El proyecto no tiene base de datos ni backend propio: los datos se piden desde el servidor de Next.js, el carrito vive en el navegador y el checkout se valida y se recalcula en el servidor sin cobrar ni guardar nada.
 
-<!-- Activar cuando haya capturas en el repositorio:
 ## Capturas
 
-![Catálogo](docs/shop.png)
-![Detalle de producto](docs/product.png)
--->
+![Catálogo](docs/shop.jpg)
+
+![Detalle de producto](docs/product.jpg)
+
+![Carrito y checkout](docs/checkout.jpg)
+
+<img src="docs/shop-mobile.jpg" alt="Catálogo en móvil" width="240">
+
+*Catálogo en móvil.*
 
 ---
 
@@ -153,16 +156,21 @@ Sin esta variable la aplicación lanza un error al arrancar. El archivo `.env.ex
 | `npm run lint`  | Revisa el código con ESLint               |
 | `npm test`      | Corre los tests con Vitest                |
 
-<!-- Activar cuando se midan los resultados de Lighthouse:
 ## Lighthouse
 
-| Métrica        | Antes | Después |
-| -------------- | ----- | ------- |
-| Rendimiento    |       |         |
-| Accesibilidad  |       |         |
-| Buenas prácticas |     |         |
-| SEO            |       |         |
--->
+Medido con Lighthouse 13.6 en móvil, con la mediana de 3 ejecuciones.
+
+| Métrica                        | Tienda antes | Tienda después | Inicio antes | Inicio después |
+| ------------------------------ | ------------ | -------------- | ------------ | -------------- |
+| Rendimiento                    | 60           | 87             | 64           | 68             |
+| Accesibilidad                  | 92           | 96             | 95           | 95             |
+| Buenas prácticas               | 96           | 96             | 100          | 100            |
+| SEO                            | 100          | 100            | 100          | 100            |
+| Largest Contentful Paint (LCP) | 4,4 s        | 3,6 s          | 98,8 s       | 38,2 s         |
+| Cumulative Layout Shift (CLS)  | 0,345        | 0              | 0,034        | 0              |
+| Peso de la página              | 0,41 MB      | 0,49 MB        | 19,97 MB     | 7,52 MB        |
+
+"Antes" es la versión de `main` desplegada en Vercel; "después" es la compilación de producción de esta rama servida en local con el mismo Chrome. En la página de inicio, la imagen animada de la portada sigue siendo el principal cuello de botella.
 
 ---
 
