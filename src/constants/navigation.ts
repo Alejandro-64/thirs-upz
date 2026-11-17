@@ -29,7 +29,7 @@ export const LEGAL_MENU = [
   },
   {
     id: 2,
-    label: "Privacy policy",
+    label: "Privacy Policy",
     href: "/",
   },
   {

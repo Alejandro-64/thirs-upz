@@ -1,11 +1,8 @@
-"use client";
-
-import { Container } from "@/components";
-import { Filter, Products } from "@/features";
-import { Suspense, useState } from "react";
+import ShopContent from '@/features/shop/ShopContent';
+import { getClothingProducts } from '@/services/http';
 
 const Shop = () => {
-  const [total, setTotal] = useState(0);
+  const productsPromise = getClothingProducts();
 
   return (
     <>
@@ -15,15 +12,7 @@ const Shop = () => {
         content="Browse our full catalog of classic apparel and shoes."
       />
 
-      <Container>
-        <Suspense fallback={null}>
-          <Filter totalProducts={total} />
-        </Suspense>
-
-        <Suspense fallback={null}>
-          <Products onProductsCount={setTotal} />
-        </Suspense>
-      </Container>
+      <ShopContent productsPromise={productsPromise} />
     </>
   );
 };

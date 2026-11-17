@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es"
+      lang="en"
       className={`${quattrocento.variable} ${spaceGrotesk.variable}`}
     >
       <body className="min-h-screen grid grid-rows-[auto_1fr_auto]">

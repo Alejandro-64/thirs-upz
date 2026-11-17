@@ -31,6 +31,14 @@ body {
   font-family: var(--font-quattrocento);
 }
 
+/* visible focus ring for keyboard users on every control */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 2px;
+  }
+}
+
 /* indigo: {
   100: "#e1e1e1",
   200: "#c2c2c2",

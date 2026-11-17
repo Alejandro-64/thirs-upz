@@ -1,21 +1,23 @@
 import { Button } from "@/components";
+import { MIN_QUANTITY, maxQuantityFor } from "@/constants/cart";
 import { useCartStore } from "@/store/cart-store";
-import { ProductType } from "@/types/product-type";
+import { CartItem } from "@/types/cart-item-type";
+import Image from "next/image";
 import { MdAdd, MdOutlineDelete, MdRemove } from "react-icons/md";
 
-const Card = ({ product }: { product: ProductType }) => {
+const Card = ({ product }: { product: CartItem }) => {
   const remove = useCartStore((state) => state.remove);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
 
   return (
     <article className="grid grid-cols-[auto_1fr_auto] gap-4 md:grid-cols-[auto_1fr_1fr]">
       <div className="w-20 aspect-square">
-        <img
+        <Image
           src={product.thumbnail}
           alt={product.title}
           width={400}
           height={400}
-          loading="lazy"
+          sizes="80px"
           className="w-full h-full"
         />
       </div>
@@ -29,16 +31,16 @@ const Card = ({ product }: { product: ProductType }) => {
         <div className="w-20 p-2 border border-accent flex items-center justify-between gap-2">
           <Button
             aria-label="Decrement Quantity"
-            disabled={product.quantity === 1}
-            onClick={() => updateQuantity(product, -1)}
+            disabled={product.quantity <= MIN_QUANTITY}
+            onClick={() => updateQuantity(product.id, -1)}
           >
             <MdRemove />
           </Button>
           <span className="text-xs">{product.quantity}</span>
           <Button
             aria-label="Increment Quantity"
-            disabled={product.quantity === 10}
-            onClick={() => updateQuantity(product, 1)}
+            disabled={product.quantity >= maxQuantityFor(product.stock)}
+            onClick={() => updateQuantity(product.id, 1)}
           >
             <MdAdd />
           </Button>

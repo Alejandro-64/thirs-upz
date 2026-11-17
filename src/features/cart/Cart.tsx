@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, Link } from "@/components";
+import { Link } from "@/components";
+import CheckoutForm from "../checkout/CheckoutForm";
 import { Card, Message } from "./components";
 import { TOTAL_PRICE, useCartStore } from "@/store/cart-store";
 
@@ -32,7 +33,7 @@ const Cart = () => {
               <p>$ {price.toFixed(2)}</p>
             </div>
 
-            <Button className="bg-accent w-full h-8 md:w-32">Pay</Button>
+            <CheckoutForm />
           </div>
         </>
       )}

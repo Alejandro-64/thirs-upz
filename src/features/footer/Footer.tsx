@@ -1,4 +1,4 @@
-import { Container, Link, Logo } from "@/components";
+import { Container, Link } from "@/components";
 import {
   LEGAL_MENU,
   NAVIGATION_MENU,
